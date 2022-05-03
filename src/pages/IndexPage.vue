@@ -26,7 +26,8 @@
                     <div class="text-h6">Usuários</div>
                   </q-item>
                   <q-item>
-                    <div class="crm_table_subtitle dark" v-if="pagination.total">Exibindo {{ pagination.total }} registro(s) encontrado(s)</div>
+                    <p v-if="pagination.total">Exibindo {{ pagination.total }} registro(s) encontrado(s)</p>
+                    <p v-else>Nenhum registro encontrado</p>
                   </q-item>
                 </div>
 
@@ -99,9 +100,7 @@
         </q-table>
 
         <div class="col-12 q-py-lg" style="display: flex;justify-content: space-around;">
-          <q-pagination v-if="pagination.page === 1" v-model="pagination.page" color="grey-8" :max="pagination.page + 2" size="sm" @click="goToPage(pagination.page)" />
-          <q-pagination v-else-if="pagination.page === 2" v-model="pagination.page" color="grey-8" :max="pagination.page + 2" size="sm" @click="goToPage(pagination.page)" />
-          <q-pagination v-else v-model="pagination.page" color="grey-8" :min="1 && pagination.page - 2" :max="pagination.page + 2" size="sm" @click="goToPage(pagination.page)" />
+          <q-pagination color="grey-8" direction-links @click="goToPage(pagination.page++)" :min="1" :max="pagination.total > pagination.limit ? pagination.page + 2 : pagination.page" :max-pages="1" v-model="pagination.page" />
         </div>
 
       </q-card>
@@ -136,8 +135,14 @@ export default {
       },
 
       filterOptions: {
-        genders: [ 'Masculino', 'Feminino' ],
-        status: [ 'Ativo', 'Inativo' ]
+        genders: [ 
+          { id: 'male', name: 'Masculino' },
+          { id: 'female', name: 'Feminino' }
+        ],
+        status: [ 
+          { id: 'active', name: 'Ativo' },
+          { id: 'inactive', name: 'Inativo' }
+        ]
       },
 
       pagination: {
@@ -189,20 +194,37 @@ export default {
     onUserFilter (props) {
       this.$q.loading.show()
 
-      let page = this.pagination.page
+      var url = 'https://gorest.co.in/public/v1/users?page='
 
+      let page = this.pagination.page
       if (props) {
         page = props.pagination.page
       }
+      url += `${page}`
 
-      this.$axios({ method: 'get', url: `https://gorest.co.in/public/v1/users?page=${page}` })
+      if (this.filter.name) {
+        url += `&name=${this.filter.name}`
+      }
+      
+      if (this.filter.email) {
+        url += `&email=${this.filter.email}`
+      }
+
+      if (this.filter.gender) {
+        url += `&gender=${this.filter.gender}`
+      }
+
+      if (this.filter.status) {
+        url += `&status=${this.filter.status}`
+      }
+
+      this.$axios({ method: 'get', url: url })
         .then((response) => {
           this.pagination = response.data.meta.pagination
           this.usersData = response.data.data
         })
         .catch((err) => {
-          console.log(err, 'Erro')
-          // this.$util.notifyError('Erro na solicitação')
+          this.$q.notify({ type: 'negative', message: 'Erro na solicitação' })
         })
         .finally(() => {
           this.$q.loading.hide()
