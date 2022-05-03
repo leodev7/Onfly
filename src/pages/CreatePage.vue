@@ -5,7 +5,7 @@
       <!-- page header start -->
       <div class="row">
         <div class="q-my-md">
-          <q-breadcrumbs class="text-brown">
+          <q-breadcrumbs class="text-brown-8">
             <template v-slot:separator>
               <q-icon size="1.5em" name="chevron_right" color="primary" />
             </template>

@@ -5,7 +5,7 @@
       <!-- page header start -->
       <div class="row">
         <div class="q-my-md">
-          <q-breadcrumbs class="text-brown">
+          <q-breadcrumbs class="text-brown-8">
             <q-breadcrumbs-el label="Usuários" />
           </q-breadcrumbs>
         </div>
@@ -17,7 +17,7 @@
       <!-- page table start -->
       <q-card>
 
-        <q-table class="no-shadow no-border" hide-pagination row-key="id" :rows="usersData" :columns="userColumns" :pagination="pagination" :rows-per-page-options="[12]" @request="onUserFilter">
+        <q-table hide-pagination row-key="id" :rows="usersData" :columns="userColumns" :pagination="pagination" :rows-per-page-options="[12]" @request="onUserFilter">
           <template v-slot:top>
             <q-card-section class="full-width">
               <div class="row q-mb-md">
