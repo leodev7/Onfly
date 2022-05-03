@@ -4,9 +4,13 @@
 
       <!-- page header start -->
       <div class="row">
-        <div class="q-mt-xs q-px-xs col-12">
-          <q-breadcrumbs separator="/">
-            <q-breadcrumbs-el label="Usuários" @click="toUserIndex()" style="cursor: pointer" />
+        <div class="q-my-md">
+          <q-breadcrumbs class="text-brown">
+            <template v-slot:separator>
+              <q-icon size="1.5em" name="chevron_right" color="primary" />
+            </template>
+
+            <q-breadcrumbs-el label="Usuários" @click="toUserIndex()" style="font-weight: bold; cursor: pointer" />
             <q-breadcrumbs-el label="Cadastrar usuário" />
           </q-breadcrumbs>
         </div>

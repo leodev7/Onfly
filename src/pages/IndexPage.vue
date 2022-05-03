@@ -4,8 +4,8 @@
 
       <!-- page header start -->
       <div class="row">
-        <div class="q-mt-xs q-px-xs col-12">
-          <q-breadcrumbs separator="/">
+        <div class="q-my-md">
+          <q-breadcrumbs class="text-brown">
             <q-breadcrumbs-el label="Usuários" />
           </q-breadcrumbs>
         </div>
