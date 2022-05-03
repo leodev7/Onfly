@@ -20,38 +20,34 @@
         <q-table class="no-shadow no-border" hide-pagination row-key="id" :rows="usersData" :columns="userColumns" :pagination="pagination" :rows-per-page-options="[12]" @request="onUserFilter">
           <template v-slot:top>
             <q-card-section class="full-width">
-              <div class="row">
+              <div class="row q-mb-md">
                 <div class="col-xs-12 col-sm-8">
-                  <q-item>
-                    <div class="text-h6">Usuários</div>
-                  </q-item>
-                  <q-item>
-                    <p v-if="pagination.total">Exibindo {{ pagination.total }} registro(s) encontrado(s)</p>
-                    <p v-else>Nenhum registro encontrado</p>
-                  </q-item>
+                  <p class="text-h6">Usuários</p>
+                  <p v-if="pagination.total">Exibindo {{ pagination.total }} registro(s) encontrado(s)</p>
+                  <p v-else>Nenhum registro encontrado</p>
                 </div>
 
-                <div class="col-4 text-right">
+                <div class="col-xs-12 col-sm-4 text-right">
                   <q-btn color="dark" class="text-capitalize" label="Cadastrar" icon="add" @click="toUserCreate()" />
                 </div>
               </div>
 
               <div class="row q-col-gutter-md q-mb-md">
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-xs-12 col-sm-3">
                   <q-input clearable outlined dense color="black" label="Nome" v-model="filter.name" />
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-xs-12 col-sm-3">
                   <q-input clearable outlined dense color="black" label="Email" v-model="filter.email" />
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-xs-12 col-sm-3">
                   <q-select clearable outlined dense color="black" label="Sexo" v-model="filter.gender" :options="filterOptions.genders" option-value="id" option-label="name" emit-value map-options />
                 </div>
-                <div class="col-xs-6 col-sm-3">
+                <div class="col-xs-12 col-sm-3">
                   <q-select clearable outlined dense color="black" label="Situação" v-model="filter.status" :options="filterOptions.status" option-value="id" option-label="name" emit-value map-options />
                 </div>
               </div>
 
-              <div class="row q-col-gutter-sm q-my-sm">
+              <div class="row q-col-gutter-sm">
                 <div class="col-12 text-right">
                   <q-btn color="red" label="Limpar" icon="delete" class="text-capitalize" @click="clearAllFilter()" />
                   <q-btn color="dark" class="text-capitalize q-ml-sm" label="Pesquisar" icon="search" @click="onUserSearch()" />
