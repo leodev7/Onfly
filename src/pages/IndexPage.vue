@@ -49,8 +49,8 @@
 
               <div class="row q-col-gutter-sm">
                 <div class="col-12 text-right">
-                  <q-btn color="red" label="Limpar" icon="delete" class="text-capitalize" @click="clearAllFilter()" />
-                  <q-btn color="dark" class="text-capitalize q-ml-sm" label="Pesquisar" icon="search" @click="onUserSearch()" />
+                  <q-btn color="dark" class="text-capitalize" label="Pesquisar" icon="search" @click="onUserSearch()" />
+                  <q-btn color="red" class="text-capitalize q-ml-sm" label="Limpar" icon="delete" @click="clearAllFilter()" />
                 </div>
               </div>
 
@@ -82,6 +82,7 @@
           <template v-slot:body-cell-action="props">
             <q-td :props="props">
               <q-btn color="dark" size="sm" label="Editar" icon="edit" class="text-capitalize q-ml-sm" @click="toUserEdit(props.row.id)" />
+              <q-btn color="red" size="sm" label="Excluir" icon="delete" class="text-capitalize q-ml-sm" @click="confirmDeleteDialog(props.row)" />
             </q-td>
           </template>
 
@@ -223,6 +224,38 @@ export default {
           this.$q.notify({ type: 'negative', message: 'Erro na solicitação' })
         })
         .finally(() => {
+          this.$q.loading.hide()
+        })
+    },
+
+    confirmDeleteDialog (userId) {
+      this.$q.dialog({
+        html: true,
+        title: `Deseja excluir o(a) usuário(a)<br />${userId.name}?`,
+        ok: {
+          push: true
+        },
+        cancel: {
+          push: true,
+          color: 'red'
+        }
+      }).onOk(() => {
+        this.toUserDelete(userId.id)
+      })
+    },
+
+    toUserDelete (userId) {
+      this.$q.loading.show()
+
+      this.$axios({ method: 'delete', url: `https://gorest.co.in/public/v1/users/${userId}`, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
+        .then(() => {
+          this.$q.notify({ type: 'positive', message: 'Usuário excluido' })
+        })
+        .catch(() => {
+          this.$q.notify({ type: 'negative', message: 'Erro ao excluir usuário' })
+        })
+        .finally(() => {
+          this.onUserFilter()
           this.$q.loading.hide()
         })
     }
