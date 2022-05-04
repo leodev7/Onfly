@@ -19,55 +19,7 @@
 
       <q-space />
 
-      <!-- form start -->
-      <q-card>
-
-        <q-card-section>
-          <q-item-section>
-
-            <q-item-label>
-              <q-item>
-                <p class="text-h6">Dados de registro</p>
-              </q-item>
-            </q-item-label>
-
-            <q-item-label>
-              <div class="row q-col-gutter-sm">
-                <div class="col-xs-12 col-sm-6">
-                  <q-input dense outlined clearable color="black" text-color="black" v-model="user.name" label="Nome" maxlength="191" />
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                  <q-input dense outlined clearable color="black" text-color="black" v-model="user.email" label="Email" maxlength="191" />
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                  <q-select dense outlined clearable color="black" label="Sexo" v-model="user.gender" :options="genders" option-value="id" option-label="name" emit-value map-options />
-                </div>
-                <div class="col-xs-12 col-sm-6">
-                  <q-toggle v-model="user.status" label="Ativo" color="green" checked-icon="check" unchecked-icon="clear" true-value="active" false-value="inactive" />
-                </div>
-              </div>
-            </q-item-label>
-
-          </q-item-section>
-        </q-card-section>
-
-        <q-separator class="q-my-sm" />
-
-        <q-card-section>
-          <q-item-section>
-
-            <q-item-label>
-              <div class="text-right q-gutter-sm">
-                <q-btn color="dark" icon="cancel" label="Cancelar" class="text-capitalize" @click="toUserIndex()" />
-                <q-btn color="dark" icon="save" label="Salvar" class="text-capitalize" @click="onUserCreate()" />
-              </div>
-            </q-item-label>
-
-          </q-item-section>
-        </q-card-section>
-
-      </q-card>
-      <!-- form end -->
+      <UserCard @userCreate="onUserCreate($event)" />
 
     </div>
 
@@ -75,34 +27,23 @@
 </template>
 
 <script>
+import UserCard from 'src/components/userCard/UserCard.vue'
 
 export default {
   name: 'UserCreate',
-
-  data () {
-    return {
-      genders: [ 
-        { id: 'male', name: 'Masculino' },
-        { id: 'female', name: 'Feminino' }
-      ],
-      user: {
-        name: null,
-        email: null,
-        gender: null,
-        status: 'active'
-      }
-    }
+  components: {
+    UserCard
   },
 
   methods: {
     toUserIndex () {
       this.$router.push({ name: 'r_user_index' })
     },
-
-    onUserCreate () {
+    
+    onUserCreate (userData) {
       this.$q.loading.show()
 
-      this.$axios({ method: 'post', url: 'https://gorest.co.in/public/v1/users', data: this.user, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
+      this.$axios({ method: 'post', url: 'https://gorest.co.in/public/v1/users', data: userData, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
         .then((response) => {
           this.$q.notify({ type: 'positive', message: 'Cadastrado com sucesso' })
 
