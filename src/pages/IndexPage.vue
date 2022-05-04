@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import { api } from 'boot/axios'
 
 export default {
   name: 'UserIndex',
@@ -191,7 +192,7 @@ export default {
     onUserFilter (props) {
       this.$q.loading.show()
 
-      var url = 'https://gorest.co.in/public/v1/users?page='
+      var url = '?page='
 
       let page = this.pagination.page
       if (props) {
@@ -215,7 +216,7 @@ export default {
         url += `&status=${this.filter.status}`
       }
 
-      this.$axios({ method: 'get', url: url })
+      api.get(url)
         .then((response) => {
           this.pagination = response.data.meta.pagination
           this.usersData = response.data.data
@@ -247,7 +248,7 @@ export default {
     toUserDelete (userId) {
       this.$q.loading.show()
 
-      this.$axios({ method: 'delete', url: `https://gorest.co.in/public/v1/users/${userId}`, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
+      api.delete(`${userId}`)
         .then(() => {
           this.$q.notify({ type: 'positive', message: 'Usuário excluido' })
         })

@@ -28,6 +28,7 @@
 
 <script>
 import UserCard from 'src/components/userCard/UserCard.vue'
+import { api } from 'boot/axios'
 
 export default {
   name: 'UserEdit',
@@ -54,7 +55,7 @@ export default {
     getUserById () {
       this.$q.loading.show()
 
-      this.$axios({ method: 'get', url: `https://gorest.co.in/public/v1/users/${this.userId}` })
+      api.get(`${this.userId}`)
         .then((response) => {
           this.user = response.data.data
         })
@@ -69,7 +70,7 @@ export default {
     onUserEdit (userData) {
       this.$q.loading.show()
 
-      this.$axios({ method: 'put', url: `https://gorest.co.in/public/v1/users/${this.userId}`, data: userData, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
+      api.put(`${this.userId}`, { data: userData })
         .then((response) => {
           this.$q.notify({ type: 'positive', message: 'Atualizado com sucesso' })
 

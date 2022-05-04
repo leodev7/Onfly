@@ -28,6 +28,7 @@
 
 <script>
 import UserCard from 'src/components/userCard/UserCard.vue'
+import { api } from 'boot/axios'
 
 export default {
   name: 'UserCreate',
@@ -43,7 +44,7 @@ export default {
     onUserCreate (userData) {
       this.$q.loading.show()
 
-      this.$axios({ method: 'post', url: 'https://gorest.co.in/public/v1/users', data: userData, headers: { 'Authorization': 'Bearer d949591f556c81ec7595da23ade6a76d6ca39cedb4c88556b779001b64d1692a' } })
+      api.post('', userData )
         .then((response) => {
           this.$q.notify({ type: 'positive', message: 'Cadastrado com sucesso' })
 
